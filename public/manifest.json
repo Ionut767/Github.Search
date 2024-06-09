@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Github Search",
+  "version": "1.0",
+  "author": "Ionut767",
+  "description": "Search people on Github! Fast and easy as it sounds!",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["scripting", "storage"],
+  "icons": {
+    "32": "icon32.png"
+  },
+  "host_permissions": ["<all_urls>"]
+}
