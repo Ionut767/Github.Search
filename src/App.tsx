@@ -7,18 +7,20 @@ const App = () => {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    chrome.storage.sync.get(
-      ["username", "user", "displayForm"],
-      function (result) {
-        if (result.username) setUsername(result.username);
-        if (result.user) setUser(JSON.parse(result.user));
-        if (result.displayForm) setHide(result.displayForm);
-      }
-    );
+    const keys = ["username", "user", "displayForm"];
+    chrome.storage.sync.get(keys, (result) => {
+      const { username: u, user: uu, displayForm: df } = result;
+      setUsername(u || "");
+      setUser(uu ? JSON.parse(uu) : null);
+      setHide(df || false);
+    });
   }, []);
 
   useEffect(() => {
-    chrome.storage.sync.set({ username: username, user: JSON.stringify(user) });
+    chrome.storage.sync.set({
+      username,
+      user: JSON.stringify(user),
+    });
   }, [username, user]);
 
   const fetchUser = (username: string) => {
@@ -35,14 +37,6 @@ const App = () => {
       });
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-
-  const handleFetchClick = () => {
-    fetchUser(username);
-  };
-
   const handleClearClick = () => {
     setUsername("");
     setUser(null);
@@ -50,23 +44,22 @@ const App = () => {
   };
   const formstate = () => {
     if (!username) return;
-    if (hide) chrome.storage.sync.set({ displayForm: false });
-    else chrome.storage.sync.set({ displayForm: true });
+    chrome.storage.sync.set({ displayForm: !hide });
     setHide(!hide);
   };
 
   return (
     <main
-      className="flex flex-col items-center justify-center h-full bg-gray-100 p-5"
       style={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100%",
+        width: "100%",
+        minWidth: "320px",
       }}
     >
-      {/** */}
       {user && (
         <p
           onClick={formstate}
@@ -75,7 +68,7 @@ const App = () => {
           {!hide ? "Hide" : "Show"} the form
         </p>
       )}{" "}
-      {!hide && (
+      {!hide && !isLoading && (
         <div
           style={{
             display: "flex",
@@ -91,16 +84,16 @@ const App = () => {
           <input
             type="text"
             value={username}
-            onChange={handleInputChange}
+            onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter GitHub username"
             style={{
               padding: "0.25rem",
-              border: "1px solid #ccc",
+              border: "1px solid",
               borderRadius: "0.25rem",
             }}
           />
           <button
-            onClick={handleFetchClick}
+            onClick={() => fetchUser(username)}
             style={{
               marginTop: "0.5rem",
               padding: "0.25rem",
@@ -124,7 +117,7 @@ const App = () => {
         </div>
       )}
       {isLoading ? (
-        <p className="text-3xl font-bold pt-10">Loading...</p>
+        <p style={{ fontSize: "1.5rem" }}>Loading...</p>
       ) : user?.name ? (
         <div
           style={{
@@ -143,7 +136,7 @@ const App = () => {
               height: "12rem",
               borderRadius: "50%",
               marginTop: "1rem",
-              border: "1px solid #2C3034",
+              border: "3px solid #2C3034",
             }}
           >
             <img
@@ -181,8 +174,11 @@ const App = () => {
                 alignItems: "center",
                 textDecoration: "none",
                 color: "inherit",
+                cursor: "pointer",
               }}
-              href={`https://github.com/${username}?tab=followers`}
+              onClick={() =>
+                window.open(`https://github.com/${username}?tab=followers`)
+              }
             >
               <span style={{ fontWeight: "bold" }}> {user.followers} </span>{" "}
               followers  ·
@@ -193,8 +189,11 @@ const App = () => {
                 alignItems: "center",
                 textDecoration: "none",
                 color: "inherit",
+                cursor: "pointer",
               }}
-              href={`https://github.com/${username}?tab=following`}
+              onClick={() =>
+                window.open(`https://github.com/${username}?tab=following`)
+              }
             >
               <span style={{ fontWeight: "bold" }}>   {user.following}  </span>
               following
@@ -242,7 +241,7 @@ const App = () => {
 
 export default App;
 
-export interface User {
+type User = {
   followers: number;
   following: number;
   login: string;
@@ -251,4 +250,4 @@ export interface User {
   bio: string;
   email: string;
   location: string;
-}
+};

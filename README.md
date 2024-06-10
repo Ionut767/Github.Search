@@ -1,6 +1,12 @@
-# GitHub User Fetcher 🔍
+# GitHub.Search 🔍
 
-Welcome to the GitHub User Fetcher! 👋 This is a simple React application that allows you to fetch and display user profiles from GitHub. 📄
+Extension preview:
+
+<p align="center">
+  <img src="./src/assets/banner.png" alt="GitHub User Fetcher Banner">
+</p>
+
+Welcome to the GitHub.Search! 👋 This is a simple React application that allows you to fetch and display user profiles from GitHub. 📄
 
 ## 🎉 Features
 
