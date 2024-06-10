@@ -22,13 +22,6 @@ Enter a GitHub username in the input field and click the "Fetch Profile" button.
 
 The main component of this application is `App`. It uses React hooks to manage state and fetch data from the GitHub API. The `User` interface defines the shape of the user data.
 
-Here's a brief overview of the main functions in the `App` component:
-
-- `fetchUser`: Fetches a user's profile data from the GitHub API. 📡
-- `handleInputChange`: Updates the `username` state when the input field changes. ✍️
-- `handleFetchClick`: Calls `fetchUser` when the "Fetch Profile" button is clicked. 💻
-- `handleClearClick`: Clears the `username` and `user` states when the "Clear" button is clicked. 🗑️
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue. 🎉
@@ -36,3 +29,9 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 ## 📃 License
 
 This project is licensed under the [MIT](/LICENSE). See the LICENSE file for details. 📝
+
+## ⚠️ Warning
+
+This project is a fan-made extension and is not affiliated with GitHub, Inc. It is a personal project created by fans of the GitHub API. Any issues or concerns should be directed to the individual maintaining this project.
+
+Please note that this project is a personal initiative and is not endorsed by GitHub, Inc.
