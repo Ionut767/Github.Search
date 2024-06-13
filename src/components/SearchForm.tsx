@@ -20,8 +20,8 @@ export default function SearchForm({
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        marginBottom: "1.5rem",
         alignContent: "center",
+        marginBottom: "0.5rem",
         textAlign: "center",
       }}
     >
@@ -37,27 +37,12 @@ export default function SearchForm({
           borderRadius: "0.25rem",
         }}
       />
-      <button
-        type="submit"
-        style={{
-          marginTop: "0.5rem",
-          padding: "0.25rem",
-          border: "1px solid #ccc",
-          borderRadius: "0.25rem",
-        }}
-      >
+      <br />
+      <button type="submit" className="button">
         Fetch Profile
       </button>
-      <button
-        type="button"
-        onClick={handleClearClick}
-        style={{
-          marginTop: "0.5rem",
-          padding: "0.25rem",
-          border: "1px solid #ccc",
-          borderRadius: "0.25rem",
-        }}
-      >
+      <br />
+      <button type="button" onClick={handleClearClick} className="button">
         Clear
       </button>
     </form>

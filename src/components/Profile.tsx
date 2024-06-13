@@ -17,7 +17,7 @@ export default function Profile({
         alignItems: "center",
         width: "15rem",
         height: "100%",
-        paddingInline: "5rem",
+        // paddingInline: "5rem",
       }}
     >
       <div
@@ -98,14 +98,15 @@ export default function Profile({
         }}
       >
         <button
+          className="button"
           style={{
             marginBottom: "10px",
             padding: "10px",
-            cursor: "pointer",
-            color: "white",
+            //   cursor: "pointer",
+            //   color: "white",
             backgroundColor: "#2C3034",
             width: "100%",
-            border: "1px solid #21262D",
+            //   border: "1px solid #21262D",
           }}
           onClick={() => window.open(`https://github.com/${user.login}`)}
         >

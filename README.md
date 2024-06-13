@@ -30,6 +30,10 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 This project is licensed under the [MIT](/LICENSE). See the LICENSE file for details. 📝
 
+## 🐛 Bug report!:
+
+- Chrome Extensions doesn't support backend code. I am working on a solution for this!
+
 ## ⚠️ Warning
 
 This project is a fan-made extension and is not affiliated with GitHub, Inc. It is a personal project created by fans of the GitHub API. Any issues or concerns should be directed to the individual maintaining this project.

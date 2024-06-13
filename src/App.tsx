@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import Profile from "./components/Profile";
 import { User } from "./types";
 import SearchForm from "./components/SearchForm";
+import SettingsPage from "./components/SettingsPage";
+import SettingsButton from "./components/SettingsButton";
 
 export default function App() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hide, setHide] = useState(false);
-
+  const [showSettings, setShowSettings] = useState(false);
   useEffect(() => {
     const keys = ["username", "user", "displayForm"];
     chrome.storage.sync.get(keys, (result) => {
@@ -27,6 +29,13 @@ export default function App() {
   }, [username, user]);
 
   const fetchUser = (username: string) => {
+    if (
+      !username ||
+      user?.login?.toLocaleLowerCase() === username.toLocaleLowerCase()
+    ) {
+      return;
+    }
+
     setIsLoading(true);
     fetch(`https://api.github.com/users/${username}`)
       .then((res) => res.json())
@@ -50,6 +59,21 @@ export default function App() {
     chrome.storage.sync.set({ displayForm: !hide });
     setHide(!hide);
   };
+  const SettingsButtonComponent = () => (
+    <SettingsButton
+      showSettings={showSettings}
+      setShowSettings={setShowSettings}
+    />
+  );
+  if (showSettings)
+    return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ width: "100%", backgroundColor: "#2f3136" }}>
+          <SettingsButtonComponent />
+        </div>
+        <SettingsPage />
+      </div>
+    );
   return (
     <main
       style={{
@@ -62,27 +86,32 @@ export default function App() {
         minWidth: "320px",
       }}
     >
-      {user && (
-        <p
-          onClick={formstate}
-          style={{ cursor: "pointer", color: "gray", margin: "0" }}
-        >
-          {!hide ? "Hide" : "Show"} the form
-        </p>
-      )}
       {!hide && !isLoading && (
-        <SearchForm
-          username={username}
-          setUsername={setUsername}
-          fetchUser={fetchUser}
-          handleClearClick={handleClearClick}
-        />
+        <>
+          <SettingsButtonComponent />
+          <SearchForm
+            username={username}
+            setUsername={setUsername}
+            fetchUser={fetchUser}
+            handleClearClick={handleClearClick}
+          />
+        </>
       )}
       {isLoading ? (
         <p style={{ fontSize: "1.5rem" }}>Loading...</p>
-      ) : user?.name ? (
-        <Profile user={user} username={username} />
-      ) : null}
+      ) : (
+        user && (
+          <>
+            <p
+              onClick={formstate}
+              style={{ cursor: "pointer", color: "gray", margin: "10px" }}
+            >
+              {!hide ? "Hide" : "Show"} the form
+            </p>
+            <Profile user={user} username={username} />
+          </>
+        )
+      )}
     </main>
   );
 }
