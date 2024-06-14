@@ -33,6 +33,7 @@ This project is licensed under the [MIT](/LICENSE). See the LICENSE file for det
 ## 🐛 Bug report!:
 
 - Chrome Extensions doesn't support backend code. I am working on a solution for this!
+  FIX: To improve the user experience and align with security best practices, I plan to set up a separate website for this extension. The API for secure GET requests with rate limits will be implemented, and it will be openly available for developers to build their own extensions using this extension API. The website will receive update logs on a Markdown file in this repository, and it will be continuously updated with new features and improvements. The website itself will be kept private for enhanced security, but its public API will be actively supported. This change will further enhance the functionality and security of the extension, and it will provide a valuable resource for developers.
 
 ## ⚠️ Warning
 
