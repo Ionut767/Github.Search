@@ -37,6 +37,6 @@ This project is licensed under the [MIT](/LICENSE). See the LICENSE file for det
 
 ## ⚠️ Warning
 
-This project is a fan-made extension and is not affiliated with GitHub, Inc. It is a personal project created by fans of the GitHub API. Any issues or concerns should be directed to the individual maintaining this project.
+This project is a fan-made extension and is not affiliated with GitHub, Inc. Any issues or concerns should be directed to the individual maintaining this project!
 
 Please note that this project is a personal initiative and is not endorsed by GitHub, Inc.
