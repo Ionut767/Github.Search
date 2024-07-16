@@ -9,7 +9,7 @@
   },
   "permissions": ["scripting", "storage"],
   "icons": {
-    "32": "icon32.png"
+    "32": "logo.png"
   },
   "host_permissions": ["<all_urls>"]
 }
