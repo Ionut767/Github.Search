@@ -5,8 +5,22 @@ export type User = {
   avatar_url: string;
   name: string;
   bio: string;
+  html_url: string;
   email: string;
   location: string;
+};
+
+export type repos = {
+  id: number;
+  name: string;
+  full_name: string;
+  owner: User;
+  description: string;
+  html_url: string;
+  language: number;
+  forks: number;
+  stargazers_count: number;
+  default_branch: string;
 };
 export type settings = {
   // Button

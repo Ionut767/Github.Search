@@ -2,17 +2,22 @@ export default function SearchForm({
   username,
   setUsername,
   fetchUser,
+  fetchRepos,
   handleClearClick,
+  type,
 }: {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   fetchUser: (username: string) => void;
+  fetchRepos: (q: string) => void;
   handleClearClick: () => void;
+  type: "user" | "repo";
 }) {
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault(), fetchUser(username);
+        e.preventDefault(),
+          type === "user" ? fetchUser(username) : fetchRepos(username);
       }}
       style={{
         display: "flex",
@@ -30,7 +35,9 @@ export default function SearchForm({
         type="text"
         value={username}
         onChange={(event) => setUsername(event.target.value)}
-        placeholder="Enter GitHub username"
+        placeholder={`Enter GitHub ${
+          type === "user" ? "username" : "repository"
+        }`}
         style={{
           padding: "0.25rem",
           border: "1px solid",
@@ -39,7 +46,7 @@ export default function SearchForm({
       />
       <br />
       <button type="submit" className="button">
-        Fetch Profile
+        Fetch {type === "user" ? "Profile" : "Repository"}
       </button>
       <br />
       <button type="button" onClick={handleClearClick} className="button">
