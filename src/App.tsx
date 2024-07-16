@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import Profile from "./components/Profile";
 import { User } from "./types";
 import SearchForm from "./components/SearchForm";
-import SettingsPage from "./components/SettingsPage";
-import SettingsButton from "./components/SettingsButton";
 
 export default function App() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hide, setHide] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   useEffect(() => {
     const keys = ["username", "user", "displayForm"];
     chrome.storage.sync.get(keys, (result) => {
@@ -59,21 +56,6 @@ export default function App() {
     chrome.storage.sync.set({ displayForm: !hide });
     setHide(!hide);
   };
-  const SettingsButtonComponent = () => (
-    <SettingsButton
-      showSettings={showSettings}
-      setShowSettings={setShowSettings}
-    />
-  );
-  if (showSettings)
-    return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ width: "100%", backgroundColor: "#2f3136" }}>
-          <SettingsButtonComponent />
-        </div>
-        <SettingsPage />
-      </div>
-    );
   return (
     <main
       style={{
@@ -88,7 +70,6 @@ export default function App() {
     >
       {!hide && !isLoading && (
         <>
-          <SettingsButtonComponent />
           <SearchForm
             username={username}
             setUsername={setUsername}
