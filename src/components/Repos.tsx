@@ -73,6 +73,7 @@ export default function Repos({
                           style={{
                             width: "20px",
                             height: "20px",
+                            filter: "invert(100%)",
                             margin: "2px",
                           }}
                         />
