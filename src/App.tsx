@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Profile from "./components/Profile";
 import { repos, User } from "./types";
 import SearchForm from "./components/SearchForm";
+import Repos from "./components/Repos";
 
 export default function App() {
   const [username, setUsername] = useState("");
@@ -69,6 +70,7 @@ export default function App() {
   };
   const handleClearClick = () => {
     setUsername("");
+    setRepos(null);
     if (type === "user") {
       setUser(null);
       if (type == "user") chrome.storage.sync.remove(["username", "user"]);
@@ -115,113 +117,7 @@ export default function App() {
       {isLoading ? (
         <p style={{ fontSize: "1.5rem" }}>Loading...</p>
       ) : repos && type === "repo" ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          {repos.map((repo) => (
-            <div
-              key={repo.id}
-              style={{
-                border: "1px solid gray",
-                padding: "15px",
-                margin: "10px",
-                borderRadius: "5px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              data-repo-id={repo.id}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <h3 style={{ fontSize: "1.5rem", marginInline: "10px" }}>
-                  {repo.name}
-                </h3>
-                <p style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                  {repo.description}
-                </p>
-                <div
-                  style={{ display: "flex", flexDirection: "row", gap: "10px" }}
-                >
-                  <p style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                    Forks: {repo.forks}{" "}
-                  </p>
-                  <p style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                    Stars: {repo.stargazers_count}
-                  </p>
-                  <p style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                    Language: {repo.language}
-                  </p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: "10px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => window.open(repo.owner.html_url, "_blank")}
-                >
-                  <img
-                    src={repo.owner.avatar_url}
-                    alt={repo.owner.login}
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                  <p
-                    style={{
-                      fontSize: "1rem",
-                      marginBottom: "10px",
-                      marginTop: "10px",
-                    }}
-                  >
-                    <strong>{repo.owner.login}</strong>
-                  </p>
-                </div>
-              </div>
-              <button
-                className="button"
-                onClick={() => window.open(repo.html_url, "_blank")}
-              >
-                Visit Repository
-              </button>
-            </div>
-          ))}
-          {repos.length > 0 && (
-            <button
-              style={{ margin: "10px" }}
-              className="button"
-              onClick={() =>
-                window.open(
-                  `https://github.com/search?q=${decodeURIComponent(
-                    username
-                  )}&type=repositories`,
-                  "_blank"
-                )
-              }
-            >
-              See all
-            </button>
-          )}
-        </div>
+        <Repos repos={repos} username={username} />
       ) : (
         user &&
         username &&
