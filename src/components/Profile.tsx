@@ -3,10 +3,10 @@ import { User } from "../types";
 
 export default function Profile({
   user,
-  username,
+  search,
 }: {
   user: User;
-  username: string;
+  search: string;
 }) {
   return (
     <div
@@ -67,7 +67,7 @@ export default function Profile({
             cursor: "pointer",
           }}
           onClick={() =>
-            window.open(`https://github.com/${username}?tab=followers`)
+            window.open(`https://github.com/${search}?tab=followers`)
           }
         >
           <span style={{ fontWeight: "bold" }}> {user.followers} </span>{" "}
@@ -82,7 +82,7 @@ export default function Profile({
             cursor: "pointer",
           }}
           onClick={() =>
-            window.open(`https://github.com/${username}?tab=following`)
+            window.open(`https://github.com/${search}?tab=following`)
           }
         >
           <span style={{ fontWeight: "bold" }}>   {user.following}  </span>
@@ -104,7 +104,7 @@ export default function Profile({
             padding: "10px",
             //   cursor: "pointer",
             //   color: "white",
-            backgroundColor: "#2C3034",
+            backgroundColor: "#3f3f46",
             width: "100%",
             //   border: "1px solid #21262D",
           }}

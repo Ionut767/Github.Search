@@ -5,42 +5,41 @@ import SearchForm from "./components/SearchForm";
 import Repos from "./components/Repos";
 
 export default function App() {
-  const [username, setUsername] = useState("");
+  const [search, setSearch] = useState("");
   const [repos, setRepos] = useState<repos[] | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hide, setHide] = useState(false);
   const [type, setType] = useState<"user" | "repo">("user");
   useEffect(() => {
-    const keys = ["username", "user", "displayForm"];
+    const keys = ["search", "user", "repoq", "displayForm"];
     chrome.storage.sync.get(keys, (result) => {
-      const { username: unm, user: usr, displayForm: df } = result;
-      setUsername(unm || "");
-      setUser(usr ? JSON.parse(usr) : null);
+      const { search: unm, user: usr, repoq: rq, displayForm: df } = result;
+      unm && (setSearch(unm), usr && fetchUser(usr), rq && fetchRepos(rq));
       setHide(df || false);
     });
   }, []);
 
   useEffect(() => {
     chrome.storage.sync.set({
-      username,
-      user: JSON.stringify(user),
+      search: search,
     });
-  }, [username, user]);
+  }, [search]);
 
-  const fetchUser = (username: string) => {
+  const fetchUser = (search: string) => {
     if (
-      !username ||
-      user?.login?.toLocaleLowerCase() === username.toLocaleLowerCase()
+      !search ||
+      user?.login?.toLocaleLowerCase() === search.toLocaleLowerCase()
     ) {
       return;
     }
 
     setIsLoading(true);
-    fetch(`https://api.github.com/users/${username}`)
+    fetch(`https://api.github.com/users/${search}`)
       .then((res) => res.json())
       .then((data: User) => {
         setUser(data);
+        chrome.storage.sync.set({ user: data.login });
         setIsLoading(false);
       })
       .catch((error) => {
@@ -59,7 +58,7 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => {
         setRepos(data.items);
-        console.log(repos);
+        chrome.storage.sync.set({ repoq: q });
         setIsLoading(false);
       })
       .catch((error) => {
@@ -69,15 +68,16 @@ export default function App() {
       });
   };
   const handleClearClick = () => {
-    setUsername("");
+    setSearch("");
     setRepos(null);
     if (type === "user") {
       setUser(null);
-      if (type == "user") chrome.storage.sync.remove(["username", "user"]);
+      if (type == "user")
+        chrome.storage.sync.remove(["search", "user", "repoq"]);
     }
   };
   const formstate = () => {
-    if (!username) return;
+    if (!search) return;
     chrome.storage.sync.set({ displayForm: !hide });
     setHide(!hide);
   };
@@ -95,19 +95,11 @@ export default function App() {
     >
       {!hide && !isLoading && (
         <>
-          <button
-            onClick={() => setType(type === "user" ? "repo" : "user")}
-            className="button"
-            style={{ margin: "1rem" }}
-          >
-            Switch to
-            {type === "user" ? <span> User </span> : <span> Repository </span>}
-            Search
-          </button>
           <SearchForm
+            setType={setType}
             type={type}
-            username={username}
-            setUsername={setUsername}
+            search={search}
+            setSearch={setSearch}
             fetchUser={fetchUser}
             fetchRepos={fetchRepos}
             handleClearClick={handleClearClick}
@@ -117,10 +109,9 @@ export default function App() {
       {isLoading ? (
         <p style={{ fontSize: "1.5rem" }}>Loading...</p>
       ) : repos && type === "repo" ? (
-        <Repos repos={repos} username={username} />
+        <Repos repos={repos} search={search} />
       ) : (
         user &&
-        username &&
         user.name && (
           <>
             <p
@@ -129,7 +120,7 @@ export default function App() {
             >
               {!hide ? "Hide" : "Show"} the form
             </p>
-            <Profile user={user} username={username} />
+            <Profile user={user} search={search} />
           </>
         )
       )}

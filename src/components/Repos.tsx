@@ -1,10 +1,10 @@
 import { repos } from "../types";
 export default function Repos({
   repos,
-  username,
+  search,
 }: {
   repos: repos[];
-  username: string;
+  search: string;
 }) {
   return (
     <div
@@ -49,7 +49,7 @@ export default function Repos({
             </p>
             <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
               {[
-                { icon: "star", value: repo.stargazers_count },
+                { icon: "stars", value: repo.stargazers_count },
                 { icon: "language", value: repo.language },
                 { icon: "fork", value: repo.forks },
               ].map((item: { icon: string; value: number | string }) =>
@@ -57,7 +57,7 @@ export default function Repos({
                   ? ((typeof item.value === "number" && item.value > 0) ||
                       (typeof item.value === "string" &&
                         item.value.length > 0)) && (
-                      <p
+                      <span
                         key={item.icon}
                         style={{
                           display: "flex",
@@ -77,9 +77,8 @@ export default function Repos({
                             margin: "2px",
                           }}
                         />
-                        {item.icon[0].toUpperCase() + item.icon.slice(1)}:{" "}
-                        {item.value}
-                      </p>
+                        <p style={{ margin: "2px" }}>{item.value}</p>
+                      </span>
                     )
                   : null
               )}
@@ -129,7 +128,7 @@ export default function Repos({
           onClick={() =>
             window.open(
               `https://github.com/search?q=${decodeURIComponent(
-                username
+                search
               )}&type=repositories`,
               "_blank"
             )
