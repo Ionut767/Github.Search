@@ -35,7 +35,7 @@ export default function SearchForm({
       <button
         onClick={() => setType(type === "user" ? "repo" : "user")}
         className="button"
-        style={{ margin: "1rem" }}
+        style={{ margin: "0.5rem" }}
         type="button"
       >
         Switch to
@@ -56,14 +56,14 @@ export default function SearchForm({
           borderRadius: "0.25rem",
         }}
       />
-      <br />
-      <button type="submit" className="button">
-        Fetch {type === "user" ? "Profile" : "Repository"}
-      </button>
-      <br />
-      <button type="button" onClick={handleClearClick} className="button">
-        Clear
-      </button>
+      <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+        <button type="button" onClick={handleClearClick} className="button">
+          Clear
+        </button>
+        <button type="submit" className="button">
+          Fetch {type === "user" ? "Profile" : "Repository"}
+        </button>
+      </div>
     </form>
   );
 }

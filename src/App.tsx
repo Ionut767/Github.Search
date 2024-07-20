@@ -93,36 +93,38 @@ export default function App() {
         minWidth: "320px",
       }}
     >
-      {!hide && !isLoading && (
+      {!isLoading ? (
         <>
-          <SearchForm
-            setType={setType}
-            type={type}
-            search={search}
-            setSearch={setSearch}
-            fetchUser={fetchUser}
-            fetchRepos={fetchRepos}
-            handleClearClick={handleClearClick}
-          />
+          {!hide && (
+            <SearchForm
+              setType={setType}
+              type={type}
+              search={search}
+              setSearch={setSearch}
+              fetchUser={fetchUser}
+              fetchRepos={fetchRepos}
+              handleClearClick={handleClearClick}
+            />
+          )}
+          {repos && type === "repo" ? (
+            <Repos repos={repos} search={search} />
+          ) : (
+            user &&
+            user.name && (
+              <>
+                <p
+                  onClick={formstate}
+                  style={{ cursor: "pointer", color: "gray", margin: "10px" }}
+                >
+                  {!hide ? "Hide" : "Show"} the form
+                </p>
+                <Profile user={user} search={search} />
+              </>
+            )
+          )}
         </>
-      )}
-      {isLoading ? (
-        <p style={{ fontSize: "1.5rem" }}>Loading...</p>
-      ) : repos && type === "repo" ? (
-        <Repos repos={repos} search={search} />
       ) : (
-        user &&
-        user.name && (
-          <>
-            <p
-              onClick={formstate}
-              style={{ cursor: "pointer", color: "gray", margin: "10px" }}
-            >
-              {!hide ? "Hide" : "Show"} the form
-            </p>
-            <Profile user={user} search={search} />
-          </>
-        )
+        <p style={{ fontSize: "1.5rem" }}>Loading...</p>
       )}
     </main>
   );
